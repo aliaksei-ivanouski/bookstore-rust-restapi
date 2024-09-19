@@ -1,2 +1,42 @@
-/target
-/_db
+target/
+
+### IntelliJ IDEA ###
+.idea/modules.xml
+.idea/jarRepositories.xml
+.idea/compiler.xml
+.idea/libraries/
+*.iws
+*.iml
+*.ipr
+
+### Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+.java-version
+
+### VS Code ###
+.vscode/
+.idea/
+
+### Mac OS ###
+.DS_Store
+
+### Volumes
+_db/
+_mongodb/
+_redis/

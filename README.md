@@ -13,3 +13,9 @@ sea migrate init -d ./src/migrator
 ```shell
 sea generate entity -o src/entities -u mysql://root:12345678@localhost:13306/bookstore
 ```
+
+## Run application
+- start full application (all containers)
+```shell
+docker-compose -f docker-compose.local.yml up -d app
+```
