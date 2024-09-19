@@ -26,12 +26,12 @@ pub struct AppConfig {
 impl Default for AppConfig {
     fn default() -> Self {
         Self {
-            db_host: std::env::var("BOOKSTORE_DB_HOST").unwrap_or("localhost".to_string()),
-            db_port: std::env::var("BOOKSTORE_DB_PORT").unwrap_or("13306".to_string()),
-            db_username: std::env::var("BOOKSTORE_DB_USERNAME").unwrap_or("root".to_string()),
-            db_password: std::env::var("BOOKSTORE_DB_PASSWORD").unwrap_or("12345678".to_string()),
-            db_database: std::env::var("BOOKSTORE_DB_DATABASE").unwrap_or("bookstore".to_string()),
-            jwt_secret: std::env::var("BOOKSTORE_JWT_SECRET").expect("BOOKSTORE_JWT_SECRET must be set"),
+            db_host: std::env::var("DB_HOST").unwrap_or("localhost".to_string()),
+            db_port: std::env::var("DB_PORT").unwrap_or("13306".to_string()),
+            db_username: std::env::var("DB_USERNAME").unwrap_or("root".to_string()),
+            db_password: std::env::var("DB_PASSWORD").unwrap_or("12345678".to_string()),
+            db_database: std::env::var("DB_DATABASE").unwrap_or("bookstore".to_string()),
+            jwt_secret: std::env::var("JWT_SECRET").expect("JWT_SECRET must be set"),
         }
     }
 }

@@ -1,4 +1,3 @@
-use std::process::id;
 use std::time::SystemTime;
 use rocket::http::Status;
 use rocket::serde::{Serialize, json::Json, Deserialize};
@@ -10,7 +9,6 @@ use crate::auth::AuthenticatedUser;
 use crate::controllers::{ErrorResponse, Response, SuccessResponse};
 use crate::controllers::books::{ResBook, ResBookList};
 use crate::entities::{author, book, prelude::Author};
-use crate::entities::author::Model;
 use crate::entities::prelude::Book;
 
 #[derive(Serialize)]
@@ -51,7 +49,7 @@ impl From<&author::Model> for ResAuthor {
 #[get("/")]
 pub async fn index(
     db: &State<DatabaseConnection>,
-    user: AuthenticatedUser,
+    _user: AuthenticatedUser,
 ) -> Response<Json<ResAuthorList>> {
     let db = db as &DatabaseConnection;
 

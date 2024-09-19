@@ -1,5 +1,4 @@
 use sea_orm_migration::{prelude::*, schema::*};
-use crate::migrator::m20220101_000001_create_user_table::User;
 use crate::migrator::m20240917_074218_create_author_table::Author;
 
 #[derive(DeriveMigrationName)]

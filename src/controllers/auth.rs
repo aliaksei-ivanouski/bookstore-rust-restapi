@@ -10,7 +10,7 @@ use sea_orm::*;
 use crate::AppConfig;
 use crate::auth::AuthenticatedUser;
 use crate::controllers::{ErrorResponse, Response, SuccessResponse};
-use crate::entities::{author, prelude::*, user};
+use crate::entities::{prelude::*, user};
 
 #[derive(Deserialize)]
 #[serde(crate = "rocket::serde")]

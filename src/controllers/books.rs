@@ -7,8 +7,7 @@ use sea_orm::ActiveValue::Set;
 use sea_orm::prelude::DateTimeUtc;
 use crate::auth::AuthenticatedUser;
 use crate::controllers::{Response, SuccessResponse};
-use crate::controllers::authors::ResAuthor;
-use crate::entities::{author, book, prelude::Book};
+use crate::entities::{book, prelude::Book};
 
 #[derive(Serialize)]
 #[serde(crate = "rocket::serde")]
@@ -37,13 +36,13 @@ pub struct ReqBook {
 }
 
 impl From<&book::Model> for ResBook {
-    fn from(book: &book::Model) -> Self {
+    fn from(b: &book::Model) -> Self {
         Self {
-            id: book.id,
-            author_id: book.author_id,
-            title: book.title.to_owned(),
-            year: book.year.to_owned(),
-            cover: book.cover.to_owned(),
+            id: b.id,
+            author_id: b.author_id,
+            title: b.title.to_owned(),
+            year: b.year.to_owned(),
+            cover: b.cover.to_owned(),
         }
     }
 }
@@ -51,7 +50,7 @@ impl From<&book::Model> for ResBook {
 #[get("/")]
 pub async fn index(
     db: &State<DatabaseConnection>,
-    user: AuthenticatedUser,
+    _user: AuthenticatedUser,
 ) -> Response<Json<ResBookList>> {
     let db = db as &DatabaseConnection;
 
@@ -88,7 +87,7 @@ pub async fn create(
     let book = book.insert(db).await?;
     Ok(SuccessResponse((
         Status::Created,
-        Json(ResBook::from(book)),
+        Json(ResBook::from(&book)),
     )))
 }
 
@@ -103,7 +102,7 @@ pub async fn show(
     let book = Book::find_by_id(id).one(db).await?;
 
     let book = match book {
-        Some(book) => book,
+        Some(b) => b,
         None => {
             return Err(super::ErrorResponse((
                 Status::NotFound,
@@ -114,7 +113,7 @@ pub async fn show(
 
     Ok(SuccessResponse((
         Status::Created,
-        Json(ResBook::from(book)),
+        Json(ResBook::from(&book)),
     )))
 }
 
@@ -147,7 +146,7 @@ pub async fn update(
 
     Ok(SuccessResponse((
         Status::Created,
-        Json(ResBook::from(book)),
+        Json(ResBook::from(&book)),
     )))
 }
 

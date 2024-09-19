@@ -1,3 +1,9 @@
+## Rust REST API service example
+
+### Build following Udemy tutorial
+Creating an API server in Rust with Rocket, SeaORM and JWT
+https://www.udemy.com/course/rest-api-server-rust-rocket-seaorm-jwt
+
 ### Initiate migration tool
 ```shell
 sea migrate init -d ./src/migrator 
