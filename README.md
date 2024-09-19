@@ -19,3 +19,8 @@ sea generate entity -o src/entities -u mysql://root:12345678@localhost:13306/boo
 ```shell
 docker-compose -f docker-compose.local.yml up -d app
 ```
+
+## Address
+```shell
+curl http://localhost:18000
+```
