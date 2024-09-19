@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql
+    container_name: 'mysql-bookstore'
+    ports:
+      - '13306:3306'
+    environment:
+      - MYSQL_ROOT_PASSWORD=12345678
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 2s
+      timeout: 3s
+      retries: 15
+    volumes:
+      - ./_db:/var/lib/mysql
