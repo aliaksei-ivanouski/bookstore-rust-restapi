@@ -1,0 +1,6 @@
+groups:
+  - name: Bookstore App Alerts
+    rules:
+      - alert: InstanceDown
+        expr: up{job="Bookstore App"} < 1
+        for: 1m

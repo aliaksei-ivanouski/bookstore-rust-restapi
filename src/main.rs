@@ -6,6 +6,7 @@ use sea_orm_migration::MigratorTrait;
 use controllers::{Response, SuccessResponse};
 use fairings::cors::{options, CORS};
 use migrator::Migrator;
+use rocket_prometheus::{PrometheusMetrics};
 
 mod controllers;
 mod db;
@@ -13,6 +14,7 @@ mod entities;
 mod fairings;
 mod migrator;
 mod auth;
+mod metrics;
 
 pub struct AppConfig {
     db_host: String,
@@ -38,6 +40,7 @@ impl Default for AppConfig {
 
 #[get("/")]
 fn index() -> Response<String> {
+    metrics::metrics::HTTP_REQUESTS_TOTAL.with_label_values(&["index"]).inc();
     Ok(SuccessResponse((Status::Ok, "Hello, world!".to_string())))
 }
 
@@ -48,12 +51,28 @@ async fn rocket() -> _ {
     let db = db::connect(&config).await.unwrap();
     Migrator::up(&db, None).await.unwrap();
 
+    let prometheus = PrometheusMetrics::new();
+    prometheus
+        .registry()
+        .register(Box::new(metrics::metrics::HTTP_REQUESTS_TOTAL.clone()))
+        .unwrap();
+    prometheus
+        .registry()
+        .register(Box::new(metrics::metrics::HTTP_CONNECTED_SSE_CLIENTS.clone()))
+        .unwrap();
+    prometheus
+        .registry()
+        .register(Box::new(metrics::metrics::HTTP_RESPONSE_TIME_SECONDS.clone()))
+        .unwrap();
+
     rocket::build()
         .attach(CORS)
+        .attach(prometheus.clone())
         .manage(db)
         .manage(config)
         .mount("/", routes![options])
         .mount("/", routes![index])
+        .mount("/metrics", prometheus)
         .mount("/auth", routes![
             controllers::auth::sign_in,
             controllers::auth::sign_up,

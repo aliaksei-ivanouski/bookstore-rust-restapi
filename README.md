@@ -24,3 +24,11 @@ docker-compose -f docker-compose.local.yml up -d app
 ```shell
 curl http://localhost:18000
 ```
+
+## Prometheus dashboard
+* Available here http://localhost:9090
+
+## Grafana dashboard
+* Available here http://localhost:3000
+* login: admin
+* password: 123456

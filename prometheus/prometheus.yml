@@ -1,0 +1,16 @@
+global:
+  scrape_interval: 2s
+  scrape_timeout: 2s
+
+rule_files:
+  - alert.yml
+
+scrape_configs:
+  - job_name: 'Bookstore App'
+    metrics_path: '/metrics'
+    scrape_interval: 2s
+    static_configs:
+      - targets:
+          - 'host.docker.internal:8000'
+        labels:
+          application: 'bookstore'

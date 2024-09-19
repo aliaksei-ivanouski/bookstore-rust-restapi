@@ -10,6 +10,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    links:
+      - grafana:grafana
     environment:
       - RUST_LOG=debug
       - DB_HOST=db
@@ -37,6 +39,44 @@ services:
       retries: 15
     volumes:
       - ./_db:/var/lib/mysql
+    networks:
+      - bookstore
+
+  prometheus:
+    image: prom/prometheus:v2.30.3
+    container_name: prometheus-bookstore
+    restart: unless-stopped
+    ports:
+      - '9090:9090'
+    volumes:
+      - ./prometheus:/etc/prometheus/
+      - ./_prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    labels:
+      org.label-schema.group: "monitoring"
+    networks:
+      - bookstore
+
+  grafana:
+    image: grafana/grafana-oss:8.5.2
+    pull_policy: always
+    container_name: grafana-bookstore
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    links:
+      - prometheus:prometheus
+    volumes:
+      - ./_grafana-data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_SERVER_DOMAIN=localhost
     networks:
       - bookstore
 

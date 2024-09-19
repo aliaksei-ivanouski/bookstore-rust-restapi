@@ -40,3 +40,5 @@ build/
 _db/
 _mongodb/
 _redis/
+#_grafana-data/
+_prometheus-data/
