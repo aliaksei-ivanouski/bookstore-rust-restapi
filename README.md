@@ -31,4 +31,4 @@ curl http://localhost:18000
 ## Grafana dashboard
 * Available here http://localhost:3000
 * login: admin
-* password: 123456
+* password: admin
