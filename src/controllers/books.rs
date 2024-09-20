@@ -6,8 +6,9 @@ use sea_orm::{ActiveModelTrait, DatabaseConnection, EntityTrait, ModelTrait, Que
 use sea_orm::ActiveValue::Set;
 use sea_orm::prelude::DateTimeUtc;
 use crate::auth::AuthenticatedUser;
-use crate::controllers::{Response, SuccessResponse};
+use crate::controllers::{ErrorResponse, Response, SuccessResponse};
 use crate::entities::{book, prelude::Book};
+use crate::entities::prelude::Author;
 
 #[derive(Serialize)]
 #[serde(crate = "rocket::serde")]
@@ -76,8 +77,18 @@ pub async fn create(
 ) -> Response<Json<ResBook>> {
     let db = db as &DatabaseConnection;
 
+    let author = match Author::find_by_id(req_book.author_id).one(db).await? {
+        Some(a) => a,
+        None => {
+            return Err(ErrorResponse((
+                Status::NotFound,
+                "Author not found.".to_string()
+            )));
+        }
+    };
+
     let book = book::ActiveModel {
-        author_id: Set(user.id),
+        author_id: Set(author.id),
         title: Set(req_book.title.to_owned()),
         year: Set(req_book.year.to_owned()),
         cover: Set(req_book.cover.to_owned()),

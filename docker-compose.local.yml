@@ -3,7 +3,7 @@ services:
     build:
       context: .
       target: final
-    container_name: 'app-bookstore'
+    container_name: 'app-rust-rocket-restapi'
     platform: linux/amd64
     ports:
       - '18000:8000'
@@ -16,35 +16,37 @@ services:
       - RUST_LOG=debug
       - DB_HOST=db
       - DB_PORT=3306
-      - DB_DATABASE=bookstore
+      - DB_DATABASE=rustrocketrestapi
       - DB_USERNAME=root
       - DB_PASSWORD=12345678
       - JWT_SECRET=zNBH87*jhg^%)bjkhhkj
     networks:
-      - bookstore
+      - rust-rocket-restapi
 
   db:
     image: mysql
-    container_name: 'mysql-bookstore'
+    container_name: 'mysql-rust-rocket-restapi'
     platform: linux/amd64
     ports:
       - '13306:3306'
     environment:
       - MYSQL_ROOT_PASSWORD=12345678
-      - MYSQL_DATABASE=bookstore
+      - MYSQL_DATABASE=rustrocketrestapi
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       interval: 2s
       timeout: 3s
       retries: 15
+    command: --init-file /data/application/init.sql
     volumes:
       - ./_db:/var/lib/mysql
+      - ./sql/init.sql:/data/application/init.sql
     networks:
-      - bookstore
+      - rust-rocket-restapi
 
   prometheus:
     image: prom/prometheus:v2.30.3
-    container_name: prometheus-bookstore
+    container_name: prometheus-rust-rocket-restapi
     restart: unless-stopped
     ports:
       - '9090:9090'
@@ -61,12 +63,12 @@ services:
     labels:
       org.label-schema.group: "monitoring"
     networks:
-      - bookstore
+      - rust-rocket-restapi
 
   grafana:
     image: grafana/grafana-oss:8.5.2
     pull_policy: always
-    container_name: grafana-bookstore
+    container_name: grafana-rust-rocket-restapi
     restart: unless-stopped
     ports:
       - '3000:3000'
@@ -78,7 +80,7 @@ services:
       - GF_SECURITY_ADMIN_PASSWORD=admin
       - GF_SERVER_DOMAIN=localhost
     networks:
-      - bookstore
+      - rust-rocket-restapi
 
 networks:
-  bookstore:
+  rust-rocket-restapi:

@@ -301,24 +301,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "bookstore"
-version = "0.1.0"
-dependencies = [
- "bcrypt",
- "dotenvy",
- "jsonwebtoken",
- "lazy_static",
- "mime",
- "once_cell",
- "prometheus",
- "rocket",
- "rocket_prometheus",
- "sea-orm",
- "sea-orm-migration",
- "serde",
-]
-
-[[package]]
 name = "borsh"
 version = "1.5.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2089,6 +2071,24 @@ dependencies = [
  "spki",
  "subtle",
  "zeroize",
+]
+
+[[package]]
+name = "rust-rocket-restapi"
+version = "0.1.0"
+dependencies = [
+ "bcrypt",
+ "dotenvy",
+ "jsonwebtoken",
+ "lazy_static",
+ "mime",
+ "once_cell",
+ "prometheus",
+ "rocket",
+ "rocket_prometheus",
+ "sea-orm",
+ "sea-orm-migration",
+ "serde",
 ]
 
 [[package]]
