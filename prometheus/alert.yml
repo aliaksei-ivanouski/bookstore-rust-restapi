@@ -1,6 +1,6 @@
 groups:
-  - name: Bookstore App Alerts
+  - name: Rust Rocket REST API App Alerts
     rules:
       - alert: InstanceDown
-        expr: up{job="Bookstore App"} < 1
+        expr: up{job="Rust Rocket REST API App"} < 1
         for: 1m
